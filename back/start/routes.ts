@@ -9,6 +9,8 @@ router.get('/', [HomeController, 'show'])
 
 router
   .group(() => {
+    router.get('/session', [SessionController, 'show'])
+
     router.post('/register', [SessionController, 'register']).use(middleware.guest())
 
     router.post('/login', [SessionController, 'login']).use(middleware.guest())

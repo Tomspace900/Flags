@@ -1,20 +1,69 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from './components/ui/button';
+import LoginForm from './components/LoginForm';
+import RegisterForm from './components/RegisterForm';
+import { APICheckSession, APIGetHome, APILogout } from './utils/api';
+import { User } from './utils/types';
 
 function SamplePage() {
-	const [message, setMessage] = useState();
+	const [loading, setLoading] = useState<boolean>(true);
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+	const [message, setMessage] = useState<string>('');
+	const [user, setUser] = useState<User>();
 
-	const fetchData = async () => {
-		const data = await fetch('http://localhost:3333/');
-		const json = await data.json();
-		setMessage(json.message);
+	useEffect(() => {
+		getHome();
+		isUserLoggedIn();
+	}, []);
+
+	const isUserLoggedIn = async () => {
+		const user = await APICheckSession();
+		if (user) {
+			// user is already logged in
+			setIsLoggedIn(true);
+			setUser(user);
+		} else {
+			// user is not logged in
+			setIsLoggedIn(false);
+		}
+	};
+
+	const getHome = async () => {
+		const data = await APIGetHome();
+		if (data) {
+			setMessage(data.message);
+			setLoading(false);
+		}
+	};
+
+	const handleLogout = async () => {
+		const res = await APILogout();
+		if (res) {
+			setIsLoggedIn(false);
+			setUser(undefined);
+		}
 	};
 
 	return (
 		<div className='flex flex-col justify-center items-center w-full h-screen gap-4'>
-			<h1 className='text-4xl mb-4'>Data from API</h1>
-			<Button onClick={() => fetchData()}>Fetch</Button>
-			<p>{message}</p>
+			{!loading ? (
+				<>
+					{!isLoggedIn ? (
+						<>
+							<h1 className='text-4xl mb-4'>{message}</h1>
+							<RegisterForm />
+							<LoginForm />
+						</>
+					) : (
+						<>
+							<h1 className='text-4xl mb-4'>{user && `Hello ${user.firstname || user.username} !`}</h1>
+							<Button onClick={() => handleLogout()}>Logout</Button>
+						</>
+					)}
+				</>
+			) : (
+				<h1 className='text-4xl mb-4'>Loading...</h1>
+			)}
 		</div>
 	);
 }

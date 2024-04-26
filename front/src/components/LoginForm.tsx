@@ -4,7 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from './ui/form';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { loginFormSchema, LoginFormSchema } from '@/utils/formSchema';
-import { APILogin } from '@/utils/api';
+import { APILogin } from '@/utils/apiCalls';
 
 const handleLogin = async (data: LoginFormSchema) => {
 	const user = await APILogin(data);

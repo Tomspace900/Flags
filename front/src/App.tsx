@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from './components/ui/button';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
-import { APICheckSession, APIGetHome, APILogout } from './utils/api';
+import { APICheckSession, APIGetHome, APILogout } from './utils/apiCalls';
 import { User } from './utils/types';
 
 function SamplePage() {
@@ -12,7 +12,6 @@ function SamplePage() {
 	const [user, setUser] = useState<User>();
 
 	useEffect(() => {
-		getHome();
 		isUserLoggedIn();
 	}, []);
 
@@ -22,9 +21,12 @@ function SamplePage() {
 			// user is already logged in
 			setIsLoggedIn(true);
 			setUser(user);
+			setLoading(false);
 		} else {
 			// user is not logged in
 			setIsLoggedIn(false);
+			getHome();
+			setLoading(false);
 		}
 	};
 
@@ -32,7 +34,6 @@ function SamplePage() {
 		const data = await APIGetHome();
 		if (data) {
 			setMessage(data.message);
-			setLoading(false);
 		}
 	};
 

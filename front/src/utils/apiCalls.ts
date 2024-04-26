@@ -1,7 +1,7 @@
 import { LoginFormSchema } from './formSchema';
 import { User } from './types';
 
-const API_URL = 'http://localhost:3333';
+const API_URL = import.meta.env.VITE_ADONIS_BASE_URL;
 
 interface FetchOptions {
 	method?: 'GET' | 'POST' | 'PUT' | 'DELETE';

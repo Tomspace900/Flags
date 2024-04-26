@@ -4,7 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from './ui/form';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { registerFormSchema, RegisterFormSchema } from '@/utils/formSchema';
-import { APIRegister } from '@/utils/api';
+import { APIRegister } from '@/utils/apiCalls';
 
 const handleRegister = async (data: RegisterFormSchema) => {
 	const user = await APIRegister(data);

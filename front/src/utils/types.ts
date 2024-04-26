@@ -4,3 +4,7 @@ export type User = {
 	lastname?: string;
 	username: string;
 };
+
+export type CountryCodes = {
+	[code: string]: string;
+};

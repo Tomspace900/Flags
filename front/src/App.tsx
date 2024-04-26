@@ -1,15 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Button } from './components/ui/button';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import { APICheckSession, APIGetHome, APILogout } from './utils/apiCalls';
+import { APIGetCodes } from './utils/flagsApiCalls';
 import { User } from './utils/types';
+import { Context } from './components/Context';
+
+const API_URL = import.meta.env.VITE_FLAGCDN_BASE_URL;
 
 function SamplePage() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 	const [message, setMessage] = useState<string>('');
 	const [user, setUser] = useState<User>();
+	const { countriesCodes, setCountriesCodes } = useContext(Context);
+	const [selectedCountry, setSelectedCountry] = useState<string>();
 
 	useEffect(() => {
 		isUserLoggedIn();
@@ -45,8 +51,15 @@ function SamplePage() {
 		}
 	};
 
+	const handleGetCodes = async () => {
+		if (Object.keys(countriesCodes).length === 0) {
+			const res = await APIGetCodes();
+			setCountriesCodes(res);
+		}
+	};
+
 	return (
-		<div className='flex flex-col justify-center items-center w-full h-screen gap-4'>
+		<div className='flex flex-col justify-center items-center w-full min-h-screen gap-4'>
 			{!loading ? (
 				<>
 					{!isLoggedIn ? (
@@ -61,6 +74,17 @@ function SamplePage() {
 							<Button onClick={() => handleLogout()}>Logout</Button>
 						</>
 					)}
+					<Button onClick={() => handleGetCodes()}>Récupérer les codes</Button>
+					{selectedCountry && <img src={`${API_URL}/${selectedCountry}.svg`} alt={`${selectedCountry}_flag`} width='150' />}
+					<div className='flex flex-wrap gap-2 justify-center max-w-2xl'>
+						{Object.entries(countriesCodes).map(([key, label]) => {
+							return (
+								<Button variant={'link'} key={key} onClick={() => setSelectedCountry(key)}>
+									{label}
+								</Button>
+							);
+						})}
+					</div>
 				</>
 			) : (
 				<h1 className='text-4xl mb-4'>Loading...</h1>

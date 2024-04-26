@@ -4,33 +4,30 @@ import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import { APICheckSession, APIGetHome, APILogout } from './utils/apiCalls';
 import { APIGetCodes } from './utils/flagsApiCalls';
-import { User } from './utils/types';
 import { Context } from './components/Context';
 
 const API_URL = import.meta.env.VITE_FLAGCDN_BASE_URL;
 
 function SamplePage() {
 	const [loading, setLoading] = useState<boolean>(true);
-	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-	const [message, setMessage] = useState<string>('');
-	const [user, setUser] = useState<User>();
-	const { countriesCodes, setCountriesCodes } = useContext(Context);
+	const { countriesCodes, setCountriesCodes, user, setUser } = useContext(Context);
 	const [selectedCountry, setSelectedCountry] = useState<string>();
+	const [message, setMessage] = useState<string>('');
 
 	useEffect(() => {
 		isUserLoggedIn();
 	}, []);
 
 	const isUserLoggedIn = async () => {
-		const user = await APICheckSession();
-		if (user) {
+		const isLoggedIn = await APICheckSession();
+
+		if (isLoggedIn) {
 			// user is already logged in
-			setIsLoggedIn(true);
 			setUser(user);
 			setLoading(false);
 		} else {
 			// user is not logged in
-			setIsLoggedIn(false);
+			setUser(undefined);
 			getHome();
 			setLoading(false);
 		}
@@ -46,7 +43,6 @@ function SamplePage() {
 	const handleLogout = async () => {
 		const res = await APILogout();
 		if (res) {
-			setIsLoggedIn(false);
 			setUser(undefined);
 		}
 	};
@@ -59,10 +55,10 @@ function SamplePage() {
 	};
 
 	return (
-		<div className='flex flex-col justify-center items-center w-full min-h-screen gap-4'>
+		<div className='flex flex-col w-full max-w-6xl gap-8 min-h-screen'>
 			{!loading ? (
-				<>
-					{!isLoggedIn ? (
+				<div className='flex flex-col w-full items-center gap-4'>
+					{!user ? (
 						<>
 							<h1 className='text-4xl mb-4'>{message}</h1>
 							<RegisterForm />
@@ -85,7 +81,7 @@ function SamplePage() {
 							);
 						})}
 					</div>
-				</>
+				</div>
 			) : (
 				<h1 className='text-4xl mb-4'>Loading...</h1>
 			)}

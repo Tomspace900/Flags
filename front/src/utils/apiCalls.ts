@@ -31,8 +31,12 @@ async function fetchAPI(url: string, options: FetchOptions = {}) {
 
 // Check if the user is logged in
 export async function APICheckSession() {
-	const response: User = await fetchAPI('/auth/session');
-	return response;
+	try {
+		const response: User = await fetchAPI('/auth/session');
+		return response;
+	} catch (error) {
+		return undefined;
+	}
 }
 
 // Fetch the home page

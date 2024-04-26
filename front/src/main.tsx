@@ -7,7 +7,9 @@ import { ContextProvider } from './components/Context.tsx';
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<ContextProvider>
-			<App />
+			<div className='flex justify-center w-full'>
+				<App />
+			</div>
 		</ContextProvider>
 	</React.StrictMode>,
 );

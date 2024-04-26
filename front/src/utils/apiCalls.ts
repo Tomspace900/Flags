@@ -65,8 +65,12 @@ export async function APILogin(data: LoginFormSchema) {
 
 // Log the user out
 export async function APILogout() {
-	const response = await fetchAPI('/auth/logout', {
-		method: 'POST',
-	});
-	return response;
+	try {
+		const response = await fetchAPI('/auth/logout', {
+			method: 'POST',
+		});
+		return response;
+	} catch (error) {
+		return undefined;
+	}
 }

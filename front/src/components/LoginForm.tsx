@@ -5,14 +5,13 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { loginFormSchema, LoginFormSchema } from '@/utils/formSchema';
 import { APILogin } from '@/utils/apiCalls';
-
-const handleLogin = async (data: LoginFormSchema) => {
-	const user = await APILogin(data);
-
-	if (user) window.location.reload(); // ! solution temporaire
-};
+import { useMyContext } from './Context';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+	const { setUser } = useMyContext();
+	const navigate = useNavigate();
+
 	const form = useForm<LoginFormSchema>({
 		resolver: zodResolver(loginFormSchema),
 		defaultValues: {
@@ -20,6 +19,12 @@ const LoginForm = () => {
 			password: '',
 		},
 	});
+
+	const handleLogin = async (data: LoginFormSchema) => {
+		const user = await APILogin(data);
+		setUser(user);
+		navigate('/');
+	};
 
 	function onSubmit(values: LoginFormSchema) {
 		handleLogin(values);

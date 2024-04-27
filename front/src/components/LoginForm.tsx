@@ -32,33 +32,36 @@ const LoginForm = () => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col justify-center gap-4 w-[300px]'>
-				<FormField
-					control={form.control}
-					name='username'
-					render={({ field }) => (
-						<FormItem>
-							<FormMessage />
-							<FormControl>
-								<Input type='username' placeholder='Username' {...field} />
-							</FormControl>
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={form.control}
-					name='password'
-					render={({ field }) => (
-						<FormItem>
-							<FormMessage />
-							<FormControl>
-								<Input type='password' placeholder='Password' {...field} />
-							</FormControl>
-						</FormItem>
-					)}
-				/>
-				<Button type='submit'>Login</Button>
-			</form>
+			<div className='flex flex-col justify-between gap-8'>
+				<h1 className='text-4xl'>Sign in</h1>
+				<form onSubmit={form.handleSubmit(onSubmit)} className='h-full flex flex-col justify-center gap-4 w-[300px]'>
+					<FormField
+						control={form.control}
+						name='username'
+						render={({ field }) => (
+							<FormItem>
+								<FormMessage />
+								<FormControl>
+									<Input type='username' placeholder='Username' {...field} />
+								</FormControl>
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={form.control}
+						name='password'
+						render={({ field }) => (
+							<FormItem>
+								<FormMessage />
+								<FormControl>
+									<Input type='password' placeholder='Password' {...field} />
+								</FormControl>
+							</FormItem>
+						)}
+					/>
+					<Button type='submit'>Login</Button>
+				</form>
+			</div>
 		</Form>
 	);
 };

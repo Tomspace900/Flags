@@ -1,7 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
-import { useMyContext } from './Context';
+import { useMyContext } from './ContextProvider';
 import ProfilePopover from './ProfilePopover';
+import ThemeSwitcher from './ThemeSwitcher';
 
 const NavBar = () => {
 	const { user } = useMyContext();
@@ -14,7 +15,8 @@ const NavBar = () => {
 
 	return (
 		<div className='flex h-24 w-full justify-end items-center px-4'>
-			<div className='flex gap-2'>
+			<div className='flex items-center gap-4'>
+				<ThemeSwitcher />
 				{user ? (
 					<ProfilePopover />
 				) : (

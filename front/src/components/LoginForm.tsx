@@ -5,7 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { loginFormSchema, LoginFormSchema } from '@/utils/formSchema';
 import { APILogin } from '@/utils/apiCalls';
-import { useMyContext } from './Context';
+import { useMyContext } from './ContextProvider';
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '../components/ui/button';
 import { APIGetHome } from '../utils/apiCalls';
 import { APIGetCodes } from '../utils/flagsApiCalls';
-import { useMyContext } from '../components/Context';
+import { useMyContext } from '../components/ContextProvider';
 
 const API_URL = import.meta.env.VITE_FLAGCDN_BASE_URL;
 

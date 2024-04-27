@@ -5,14 +5,13 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { registerFormSchema, RegisterFormSchema } from '@/utils/formSchema';
 import { APIRegister } from '@/utils/apiCalls';
-
-const handleRegister = async (data: RegisterFormSchema) => {
-	const user = await APIRegister(data);
-
-	if (user) window.location.reload(); // ! solution temporaire
-};
+import { useNavigate } from 'react-router-dom';
+import { useMyContext } from './ContextProvider';
 
 const RegisterForm = () => {
+	const { setUser } = useMyContext();
+	const navigate = useNavigate();
+
 	const form = useForm<RegisterFormSchema>({
 		resolver: zodResolver(registerFormSchema),
 		defaultValues: {
@@ -22,6 +21,12 @@ const RegisterForm = () => {
 			password: '',
 		},
 	});
+
+	const handleRegister = async (data: RegisterFormSchema) => {
+		const user = await APIRegister(data);
+		setUser(user);
+		navigate('/');
+	};
 
 	function onSubmit(values: RegisterFormSchema) {
 		handleRegister(values);

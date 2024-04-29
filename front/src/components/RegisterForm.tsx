@@ -6,10 +6,10 @@ import { Input } from './ui/input';
 import { registerFormSchema, RegisterFormSchema } from '@/utils/formSchema';
 import { APIRegister } from '@/utils/apiCalls';
 import { useNavigate } from 'react-router-dom';
-import { useMyContext } from './ContextProvider';
+import { useAuth } from './AuthProvider';
 
 const RegisterForm = () => {
-	const { setUser } = useMyContext();
+	const { setUser } = useAuth();
 	const navigate = useNavigate();
 
 	const form = useForm<RegisterFormSchema>({

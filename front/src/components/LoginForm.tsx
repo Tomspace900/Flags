@@ -5,12 +5,12 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { loginFormSchema, LoginFormSchema } from '@/utils/formSchema';
 import { APILogin } from '@/utils/apiCalls';
-import { useMyContext } from './ContextProvider';
+import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from './ui/use-toast';
 
 const LoginForm = () => {
-	const { setUser } = useMyContext();
+	const { setUser } = useAuth();
 	const navigate = useNavigate();
 	const { toast } = useToast();
 

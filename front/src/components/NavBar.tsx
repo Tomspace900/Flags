@@ -1,11 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
-import { useMyContext } from './ContextProvider';
+import { useAuth } from './AuthProvider';
 import ProfilePopover from './ProfilePopover';
 import ThemeSwitcher from './ThemeSwitcher';
 
 const NavBar = () => {
-	const { user } = useMyContext();
+	const { user } = useAuth();
 	const location = useLocation();
 
 	// Hide the NavBar on login page

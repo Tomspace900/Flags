@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { CountryCodes, User } from '../utils/types';
-import { APICheckSession, APILogout } from '@/utils/apiCalls';
+import { CountryCodes, Score, User } from '../utils/types';
+import { APICheckSession, APIGetScores, APILogout } from '@/utils/apiCalls';
 
 export interface IContext {
 	countriesCodes: CountryCodes;
@@ -9,6 +9,7 @@ export interface IContext {
 	setUser: (value: User | undefined) => void;
 	logout: () => void;
 	checkSession: () => void;
+	scores: Score[] | undefined;
 }
 
 export const Context = createContext<IContext>({
@@ -18,12 +19,24 @@ export const Context = createContext<IContext>({
 	setUser: () => {},
 	logout: async () => {},
 	checkSession: async () => {},
+	scores: undefined,
 });
 
 export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [countriesCodes, setCountriesCodes] = useState<CountryCodes>({});
 	const [user, setUser] = useState<User | undefined>();
-	const checkSession = async () => setUser(await APICheckSession());
+	const [scores, setScores] = useState<Score[]>();
+
+	const checkSession = async () => {
+		setUser(await APICheckSession());
+	};
+
+	const getScores = async () => {
+		const scores = await APIGetScores();
+		if (scores) {
+			setScores(scores);
+		}
+	};
 
 	const logout = async () => {
 		const res = await APILogout();
@@ -34,10 +47,13 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
 	useEffect(() => {
 		!user && checkSession();
+		user && getScores();
 	}, [user]);
 
 	return (
-		<Context.Provider value={{ countriesCodes, setCountriesCodes, user, setUser, logout, checkSession }}>{children}</Context.Provider>
+		<Context.Provider value={{ countriesCodes, setCountriesCodes, user, setUser, logout, checkSession, scores }}>
+			{children}
+		</Context.Provider>
 	);
 };
 

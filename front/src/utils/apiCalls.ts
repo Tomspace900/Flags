@@ -74,3 +74,9 @@ export async function APILogout() {
 		return undefined;
 	}
 }
+
+// Fetch the user scores
+export async function APIGetScores() {
+	const response = await fetchAPI('/scores');
+	return response;
+}

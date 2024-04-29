@@ -10,3 +10,9 @@ export type User = {
 export type CountryCodes = {
 	[code: string]: string;
 };
+
+export type Score = {
+	id: number;
+	time: number;
+	userId: number;
+};

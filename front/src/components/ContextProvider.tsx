@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { CountryCodes, Score, User } from '../utils/types';
 import { APICheckSession, APIGetScores, APILogout } from '@/utils/apiCalls';
+import { useToast } from './ui/use-toast';
 
-export interface IContext {
+interface IContext {
 	countriesCodes: CountryCodes;
 	setCountriesCodes: (value: CountryCodes) => void;
 	user: User | undefined;
@@ -12,7 +13,7 @@ export interface IContext {
 	scores: Score[] | undefined;
 }
 
-export const Context = createContext<IContext>({
+const Context = createContext<IContext>({
 	countriesCodes: {},
 	setCountriesCodes: () => {},
 	user: undefined,
@@ -26,6 +27,7 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 	const [countriesCodes, setCountriesCodes] = useState<CountryCodes>({});
 	const [user, setUser] = useState<User | undefined>();
 	const [scores, setScores] = useState<Score[]>();
+	const { toast } = useToast();
 
 	const checkSession = async () => {
 		setUser(await APICheckSession());
@@ -42,6 +44,11 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 		const res = await APILogout();
 		if (res) {
 			setUser(undefined);
+			toast({
+				variant: 'success',
+				title: 'Logout success',
+				description: 'See you soon !',
+			});
 		}
 	};
 
@@ -58,5 +65,9 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 };
 
 export const useMyContext = (): IContext => {
-	return useContext(Context);
+	const context = useContext(Context);
+
+	if (context === undefined) throw new Error('useTheme must be used within a ThemeProvider');
+
+	return context;
 };

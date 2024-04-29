@@ -7,10 +7,11 @@ import NavBar from './components/NavBar.tsx';
 import App from './pages/Home.tsx';
 import Login from './pages/Login.tsx';
 import { ThemeProvider } from './components/ThemeProvider.tsx';
+import { Toaster } from './components/ui/toaster.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	// <React.StrictMode>
-	<ThemeProvider defaultTheme='light' storageKey='vite-ui-theme'>
+	<ThemeProvider defaultTheme='system'>
 		<ContextProvider>
 			<BrowserRouter>
 				<div className='flex justify-center w-full'>
@@ -25,7 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 				</div>
 			</BrowserRouter>
 		</ContextProvider>
-		,
+		<Toaster />
 	</ThemeProvider>,
 	// </React.StrictMode>,
 );

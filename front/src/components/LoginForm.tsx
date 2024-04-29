@@ -7,10 +7,12 @@ import { loginFormSchema, LoginFormSchema } from '@/utils/formSchema';
 import { APILogin } from '@/utils/apiCalls';
 import { useMyContext } from './ContextProvider';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from './ui/use-toast';
 
 const LoginForm = () => {
 	const { setUser } = useMyContext();
 	const navigate = useNavigate();
+	const { toast } = useToast();
 
 	const form = useForm<LoginFormSchema>({
 		resolver: zodResolver(loginFormSchema),
@@ -24,10 +26,17 @@ const LoginForm = () => {
 		const user = await APILogin(data);
 		if (user) {
 			setUser(user);
+			toast({
+				variant: 'success',
+				title: 'Login success',
+				description: `Welcome back ${user.firstname || user.username} !`,
+			});
 			navigate('/');
 		} else {
-			form.setError('root.loginError', {
-				message: 'Wrong credentials, please try again.',
+			toast({
+				variant: 'destructive',
+				title: 'Login failed',
+				description: 'Wrong credentials, please try again.',
 			});
 		}
 	};
@@ -41,9 +50,6 @@ const LoginForm = () => {
 			<div className='flex flex-col justify-between gap-8'>
 				<h1 className='text-4xl'>Sign in</h1>
 				<form onSubmit={form.handleSubmit(onSubmit)} className='h-full flex flex-col justify-center gap-4 w-[300px]'>
-					{form.formState.errors?.root?.loginError && (
-						<p className='text-red-500'>{form.formState.errors?.root?.loginError.message}</p>
-					)}
 					<FormField
 						control={form.control}
 						name='username'

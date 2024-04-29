@@ -8,10 +8,14 @@ async function fetchAPI(url: string) {
 	});
 
 	if (!response.ok) {
-		throw new Error(`Fetch error: ${response.status} - ${response.statusText}`);
+		const error = await response.json();
+		console.error(`${response.status} - ${error?.errors?.map((e: any) => e.message)}\n${response.url}`);
+		throw new Error();
 	}
 
-	return response.json();
+	const responseJson = await response.json();
+	console.info(`${response.status} - GET ${response.url}`);
+	return responseJson;
 }
 
 // Fetch the available country codes/names list

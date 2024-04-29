@@ -23,10 +23,14 @@ async function fetchAPI(url: string, options: FetchOptions = {}) {
 	});
 
 	if (!response.ok) {
-		throw new Error(`Fetch error: ${response.status} - ${response.statusText}`);
+		const error = await response.json();
+		console.error(`${response.status} - ${error?.errors?.map((e: any) => e.message)}\n${response.url}`);
+		throw new Error();
 	}
 
-	return response.json();
+	const responseJson = await response.json();
+	console.info(`${response.status} - ${options.method || 'GET'} ${response.url}`);
+	return responseJson;
 }
 
 // Check if the user is logged in
@@ -47,20 +51,28 @@ export async function APIGetHome() {
 
 // Register a new user
 export async function APIRegister(data: LoginFormSchema) {
-	const response: User = await fetchAPI('/auth/register', {
-		method: 'POST',
-		body: JSON.stringify(data),
-	});
-	return response;
+	try {
+		const response: User = await fetchAPI('/auth/register', {
+			method: 'POST',
+			body: JSON.stringify(data),
+		});
+		return response;
+	} catch (error) {
+		return undefined;
+	}
 }
 
 // Log the user in
 export async function APILogin(data: LoginFormSchema) {
-	const response: User = await fetchAPI('/auth/login', {
-		method: 'POST',
-		body: JSON.stringify(data),
-	});
-	return response;
+	try {
+		const response: User = await fetchAPI('/auth/login', {
+			method: 'POST',
+			body: JSON.stringify(data),
+		});
+		return response;
+	} catch (error) {
+		return undefined;
+	}
 }
 
 // Log the user out

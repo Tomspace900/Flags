@@ -7,7 +7,10 @@ const Login = () => {
 	const { user } = useMyContext();
 	const navigate = useNavigate();
 
-	if (user) return navigate('/');
+	if (user) {
+		navigate('/');
+		return null;
+	}
 
 	return (
 		<div className='flex h-full items-center'>

@@ -22,8 +22,14 @@ const LoginForm = () => {
 
 	const handleLogin = async (data: LoginFormSchema) => {
 		const user = await APILogin(data);
-		setUser(user);
-		navigate('/');
+		if (user) {
+			setUser(user);
+			navigate('/');
+		} else {
+			form.setError('root.loginError', {
+				message: 'Wrong credentials, please try again.',
+			});
+		}
 	};
 
 	function onSubmit(values: LoginFormSchema) {
@@ -35,6 +41,9 @@ const LoginForm = () => {
 			<div className='flex flex-col justify-between gap-8'>
 				<h1 className='text-4xl'>Sign in</h1>
 				<form onSubmit={form.handleSubmit(onSubmit)} className='h-full flex flex-col justify-center gap-4 w-[300px]'>
+					{form.formState.errors?.root?.loginError && (
+						<p className='text-red-500'>{form.formState.errors?.root?.loginError.message}</p>
+					)}
 					<FormField
 						control={form.control}
 						name='username'

@@ -1,14 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Button } from '../components/ui/button';
 import { APIGetHome } from '../utils/apiCalls';
-import { useMyContext } from '../components/ContextProvider';
-
-const API_URL = import.meta.env.VITE_FLAGCDN_BASE_URL;
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
 
 function Home() {
-	const [loading, setLoading] = useState<boolean>(true);
-	const { countriesCodes } = useMyContext();
-	const [selectedCountry, setSelectedCountry] = useState<string>();
 	const [message, setMessage] = useState<string>('');
 
 	useEffect(() => {
@@ -20,30 +16,18 @@ function Home() {
 		if (data) {
 			setMessage(data.message);
 		}
-		setLoading(false);
 	};
 
 	return (
-		<>
-			{!loading ? (
-				<div className='flex flex-col w-full items-center gap-4'>
-					<h1 className='text-4xl mb-4'>{message}</h1>
-					{selectedCountry && <img src={`${API_URL}/${selectedCountry}.svg`} alt={`${selectedCountry}_flag`} width='150' />}
-					<div className='flex flex-wrap gap-2 justify-center max-w-2xl'>
-						{countriesCodes &&
-							Object.entries(countriesCodes).map(([key, label]) => {
-								return (
-									<Button variant={'link'} key={key} onClick={() => setSelectedCountry(key)}>
-										{label}
-									</Button>
-								);
-							})}
-					</div>
-				</div>
-			) : (
-				<h1 className='text-4xl mb-4'>Loading...</h1>
-			)}
-		</>
+		<div className='flex flex-col w-full items-center gap-4 mt-36'>
+			<span className='text-4xl mb-4'>{message}</span>
+			<Button asChild>
+				<Link to={'/game'}>
+					Start
+					<ChevronRight className='ml-2 h-4 w-4' />
+				</Link>
+			</Button>
+		</div>
 	);
 }
 

@@ -5,30 +5,30 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 166 87% 6%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 166 87% 6%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 166 87% 6%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 254 58% 62%;
+    --primary-foreground: 165 89% 96%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 253 62% 75%;
+    --secondary-foreground: 165 89% 96%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 253 62% 75%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 163 63% 52%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 79% 63%;
     --destructive-foreground: 210 40% 98%;
 
-    --success: 122.7 39.3% 49.8%;
+    --success: 163 63% 48%;
     --success-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
@@ -39,31 +39,31 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 253 49% 9%;
+    --foreground: 167 87% 94%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 253 49% 9%;
+    --card-foreground: 167 87% 94%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 253 49% 9%;
+    --popover-foreground: 167 87% 94%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 254 58% 38%;
+    --primary-foreground: 167 87% 94%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 253 62% 25%;
+    --secondary-foreground: 167 87% 94%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 253 62% 25%;
+    --muted-foreground: 167 87% 94%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 163 63% 48%;
+    --accent-foreground: 167 87% 94%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 75% 58%;
     --destructive-foreground: 210 40% 98%;
 
-    --success: 122.7 39.3% 49.8%;
+    --success: 163 63% 48%;
     --success-foreground: 210 40% 98%;
 
     --border: 217.2 32.6% 17.5%;

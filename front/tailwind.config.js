@@ -11,6 +11,23 @@ module.exports = {
 				'2xl': '1400px',
 			},
 		},
+		fontSize: {
+			sm: '0.8rem',
+			base: '1rem',
+			xl: '1.4rem',
+			'2xl': '1.8rem',
+			'3xl': '2.4rem',
+			'4xl': '3.2rem',
+			'5xl': '4.2rem',
+		},
+		fontFamily: {
+			heading: 'Bellota Text',
+			body: 'Bellota Text',
+		},
+		fontWeight: {
+			normal: '400',
+			bold: '700',
+		},
 		extend: {
 			colors: {
 				border: 'hsl(var(--border))',

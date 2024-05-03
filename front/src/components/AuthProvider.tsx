@@ -4,6 +4,7 @@ import { APICheckSession, APIGetScores, APILogout } from '@/utils/apiCalls';
 import { useToast } from './ui/use-toast';
 
 interface IAuthContext {
+	resolved: boolean;
 	user: User | undefined;
 	setUser: (value: User | undefined) => void;
 	logout: () => void;
@@ -12,6 +13,7 @@ interface IAuthContext {
 }
 
 const AuthContext = createContext<IAuthContext>({
+	resolved: false,
 	user: undefined,
 	setUser: () => {},
 	logout: async () => {},
@@ -20,12 +22,14 @@ const AuthContext = createContext<IAuthContext>({
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+	const [resolved, setResolved] = useState<boolean>(false);
 	const [user, setUser] = useState<User | undefined>();
 	const [scores, setScores] = useState<Score[]>();
 	const { toast } = useToast();
 
 	const checkSession = async () => {
 		setUser(await APICheckSession());
+		setResolved(true);
 	};
 
 	const getScores = async () => {
@@ -53,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		!user && setScores(undefined);
 	}, [user]);
 
-	return <AuthContext.Provider value={{ user, setUser, logout, checkSession, scores }}>{children}</AuthContext.Provider>;
+	return <AuthContext.Provider value={{ resolved, user, setUser, logout, checkSession, scores }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = (): IAuthContext => {

@@ -13,12 +13,12 @@ import Loader from './components/Loader.tsx';
 import { Toaster } from './components/ui/toaster.tsx';
 
 const Main = () => {
-	const { user } = useAuth();
+	const { resolved } = useAuth();
 
 	return (
 		<div className='flex justify-center w-full'>
 			<div className='flex flex-col items-center w-full max-w-6xl gap-8 min-h-screen'>
-				{user ? (
+				{resolved ? (
 					<>
 						<NavBar />
 						<Routes>

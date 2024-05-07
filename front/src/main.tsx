@@ -2,9 +2,9 @@
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './index.css';
-import { ThemeProvider } from './components/ThemeProvider.tsx';
-import { AuthProvider, useAuth } from './components/AuthProvider.tsx';
-import { ContextProvider } from './components/ContextProvider.tsx';
+import { ThemeProvider } from './contexts/ThemeProvider.tsx';
+import { AuthProvider, useAuth } from './contexts/AuthProvider.tsx';
+import { ContextProvider } from './contexts/ContextProvider.tsx';
 import NavBar from './components/NavBar.tsx';
 import Home from './pages/Home.tsx';
 import Login from './pages/Login.tsx';

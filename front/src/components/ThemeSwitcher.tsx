@@ -1,4 +1,4 @@
-import { useTheme } from './ThemeProvider';
+import { useTheme } from '../contexts/ThemeProvider';
 import { Switch } from './ui/switch';
 import { useState } from 'react';
 import { Theme } from '@/utils/types';

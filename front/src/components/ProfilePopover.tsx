@@ -1,7 +1,7 @@
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Button } from './ui/button';
 import { History, LogOut, User } from 'lucide-react';
-import { useAuth } from './AuthProvider';
+import { useAuth } from '../contexts/AuthProvider';
 import { Link } from 'react-router-dom';
 
 const ProfilePopover = () => {

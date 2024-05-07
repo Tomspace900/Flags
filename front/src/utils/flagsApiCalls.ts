@@ -19,7 +19,7 @@ async function fetchAPI(url: string) {
 }
 
 // Fetch the available country codes/names list
-export async function APIGetCodes(lang: string = 'fr') {
+export async function FLAGAPIGetCodes(lang: string = 'fr'): Promise<CountryCodes> {
 	const response: CountryCodes = await fetchAPI(`/${lang}/codes.json`);
 	return response;
 }

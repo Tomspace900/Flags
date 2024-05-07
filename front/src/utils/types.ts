@@ -7,6 +7,12 @@ export type User = {
 	username: string;
 };
 
+export type Country = {
+	id: number;
+	codeIso: string;
+	name?: string;
+};
+
 export type CountryCodes = {
 	[code: string]: string;
 };

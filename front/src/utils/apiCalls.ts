@@ -1,5 +1,5 @@
 import { LoginFormSchema } from './formSchema';
-import { User } from './types';
+import { Country, User } from './types';
 
 const API_URL = import.meta.env.VITE_ADONIS_BASE_URL;
 
@@ -91,4 +91,27 @@ export async function APILogout() {
 export async function APIGetScores() {
 	const response = await fetchAPI('/scores');
 	return response;
+}
+
+// Fetch the countries in the database
+export async function APIGetCountries(): Promise<Country[] | undefined> {
+	try {
+		const response = await fetchAPI('/country');
+		return response;
+	} catch (error) {
+		return undefined;
+	}
+}
+
+// Seed the countries in the database
+export async function APIseedCountries(data: any): Promise<Country[] | undefined> {
+	try {
+		const response = await fetchAPI('/country/seed', {
+			method: 'POST',
+			body: JSON.stringify(data),
+		});
+		return response;
+	} catch (error) {
+		return undefined;
+	}
 }

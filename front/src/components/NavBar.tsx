@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
-import { useAuth } from './AuthProvider';
+import { useAuth } from '../contexts/AuthProvider';
 import ProfilePopover from './ProfilePopover';
 import ThemeSwitcher from './ThemeSwitcher';
 

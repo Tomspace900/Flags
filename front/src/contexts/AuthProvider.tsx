@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Score, User } from '../utils/types';
 import { APICheckSession, APIGetScores, APILogout } from '@/utils/apiCalls';
-import { useToast } from './ui/use-toast';
+import { useToast } from '../components/ui/use-toast';
 
 interface IAuthContext {
 	resolved: boolean;

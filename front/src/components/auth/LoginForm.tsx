@@ -1,13 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Form, FormControl, FormField, FormItem, FormMessage } from './ui/form';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 import { loginFormSchema, LoginFormSchema } from '@/utils/formSchema';
 import { APILogin } from '@/utils/apiCalls';
-import { useAuth } from './AuthProvider';
+import { useAuth } from '../../contexts/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from './ui/use-toast';
+import { useToast } from '../ui/use-toast';
 
 const LoginForm = () => {
 	const { setUser } = useAuth();

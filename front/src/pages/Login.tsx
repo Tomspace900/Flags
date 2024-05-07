@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import LoginForm from '../components/LoginForm';
-import RegisterForm from '../components/RegisterForm';
-import { useMyContext } from '@/components/ContextProvider';
+import LoginForm from '../components/auth/LoginForm';
+import RegisterForm from '../components/auth/RegisterForm';
+import { useAuth } from '@/contexts/AuthProvider';
 
 const Login = () => {
-	const { user } = useMyContext();
+	const { user } = useAuth();
 	const navigate = useNavigate();
 
 	if (user) {

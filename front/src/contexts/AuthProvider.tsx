@@ -7,6 +7,7 @@ interface IAuthContext {
 	resolved: boolean;
 	user: User | undefined;
 	setUser: (value: User | undefined) => void;
+	isAdmin: boolean;
 	logout: () => void;
 	checkSession: () => void;
 	scores: Score[] | undefined;
@@ -16,6 +17,7 @@ const AuthContext = createContext<IAuthContext>({
 	resolved: false,
 	user: undefined,
 	setUser: () => {},
+	isAdmin: false,
 	logout: async () => {},
 	checkSession: async () => {},
 	scores: undefined,
@@ -25,6 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	const [resolved, setResolved] = useState<boolean>(false);
 	const [user, setUser] = useState<User | undefined>();
 	const [scores, setScores] = useState<Score[]>();
+	const isAdmin: boolean = user?.role === 'admin';
 	const { toast } = useToast();
 
 	const checkSession = async () => {
@@ -57,7 +60,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		!user && setScores(undefined);
 	}, [user]);
 
-	return <AuthContext.Provider value={{ resolved, user, setUser, logout, checkSession, scores }}>{children}</AuthContext.Provider>;
+	return (
+		<AuthContext.Provider value={{ resolved, user, setUser, isAdmin, logout, checkSession, scores }}>{children}</AuthContext.Provider>
+	);
 };
 
 export const useAuth = (): IAuthContext => {

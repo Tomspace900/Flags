@@ -34,7 +34,7 @@ export default class CountriesController {
 
   async update({ params, request, response }: HttpContext) {
     const country = await Country.findOrFail(params.id)
-    const data = request.only(['codeIso', 'name'])
+    const data = request.only(['name', 'continent', 'about', 'memo'])
     country.merge(data)
     await country.save()
     return response.json(country)

@@ -9,6 +9,7 @@ import NavBar from './components/NavBar.tsx';
 import Home from './pages/Home.tsx';
 import Login from './pages/Login.tsx';
 import Game from './pages/Game.tsx';
+import Admin from './pages/Admin/Admin.tsx';
 import Loader from './components/Loader.tsx';
 import { Toaster } from './components/ui/toaster.tsx';
 
@@ -26,6 +27,7 @@ const Main = () => {
 							<Route path='*' element={<Home />} />
 							<Route path='/login' element={<Login />} />
 							<Route path='/game' element={<Game />} />
+							<Route path='/admin' element={<Admin />} />
 						</Routes>
 					</>
 				) : (

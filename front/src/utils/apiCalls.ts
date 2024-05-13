@@ -103,6 +103,19 @@ export async function APIGetCountries(): Promise<Country[] | undefined> {
 	}
 }
 
+// Update a country in the database
+export async function APIUpdateCountry(data: Country): Promise<Country | undefined> {
+	try {
+		const response = await fetchAPI(`/country/${data.id}`, {
+			method: 'PUT',
+			body: JSON.stringify(data),
+		});
+		return response;
+	} catch (error) {
+		return undefined;
+	}
+}
+
 // Seed the countries in the database
 export async function APIseedCountries(data: any): Promise<Country[] | undefined> {
 	try {

@@ -4,17 +4,22 @@ import { FLAGAPIGetCodes } from '@/utils/flagsApiCalls';
 import { APIGetCountries, APIseedCountries } from '@/utils/apiCalls';
 
 interface IContext {
-	countries: Country[] | undefined;
-	setCountries: (value: Country[]) => void;
+	countries: Country[];
+	updateCountryById: (id: number, data: Country) => void;
 }
 
 const Context = createContext<IContext>({
 	countries: [],
-	setCountries: () => {},
+	updateCountryById: () => {},
 });
 
 export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [countries, setCountries] = useState<Country[]>();
+	const [countries, setCountries] = useState<Country[]>([]);
+
+	const updateCountryById = (id: number, data: Country) => {
+		const updatedCountries = countries.map((country) => (country.id === id ? data : country));
+		setCountries(updatedCountries);
+	};
 
 	const getCountriesCodes = async () => {
 		let res = await APIGetCountries();
@@ -28,7 +33,7 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 			console.log(`${newRes?.length} new countries added`);
 		}
 
-		setCountries(res?.sort((a, b) => a.codeIso.localeCompare(b.codeIso)));
+		res && setCountries(res?.sort((a, b) => a.codeIso.localeCompare(b.codeIso)));
 	};
 
 	async function seedCountries(codes: CountryCodes) {
@@ -43,10 +48,10 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 	}
 
 	useEffect(() => {
-		!countries && getCountriesCodes();
+		countries.length <= 0 && getCountriesCodes();
 	}, []);
 
-	return <Context.Provider value={{ countries, setCountries }}>{children}</Context.Provider>;
+	return <Context.Provider value={{ countries, updateCountryById }}>{children}</Context.Provider>;
 };
 
 export const useMyContext = (): IContext => {

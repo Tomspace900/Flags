@@ -25,3 +25,11 @@ export const loginFormSchema = z.object({
 	username: usernameSchema,
 	password: passwordSchema,
 });
+
+export type CountryEditFormSchema = z.infer<typeof countryEditFormSchema>;
+
+export const countryEditFormSchema = z.object({
+	continent: z.string().max(30, { message: 'Continent must be at most 30 characters long' }).optional(),
+	about: z.string().max(500, { message: 'About must be at most 500 characters long' }).optional(),
+	memo: z.string().max(500, { message: 'Memo must be at most 500 characters long' }).optional(),
+});

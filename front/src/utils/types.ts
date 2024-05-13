@@ -12,6 +12,9 @@ export type Country = {
 	id: number;
 	codeIso: string;
 	name?: string;
+	continent?: string;
+	about?: string;
+	memo?: string;
 };
 
 export type CountryCodes = {

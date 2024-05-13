@@ -28,16 +28,16 @@ router.post('/scores', [ScoresController, 'store']).use(middleware.auth())
 
 router
   .group(() => {
-    router.post('/', [CountriesController, 'store'])
+    router.post('/', [CountriesController, 'store']).use(middleware.admin())
 
     router.get('/', [CountriesController, 'index'])
 
     router.get('/:id', [CountriesController, 'show'])
 
-    router.put('/:id', [CountriesController, 'update'])
+    router.put('/:id', [CountriesController, 'update']).use(middleware.admin())
 
-    router.delete('/:id', [CountriesController, 'destroy'])
+    router.delete('/:id', [CountriesController, 'destroy']).use(middleware.admin())
 
-    router.post('/seed', [CountriesController, 'seed'])
+    router.post('/seed', [CountriesController, 'seed']).use(middleware.admin())
   })
   .prefix('country')

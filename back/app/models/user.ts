@@ -25,6 +25,9 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column({ serializeAs: null }) // Permet de ne pas renvoyer le mot de passe
   declare password: string
 
+  @column()
+  declare role: string
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

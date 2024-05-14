@@ -14,7 +14,7 @@ import Loader from './components/Loader.tsx';
 import { Toaster } from './components/ui/toaster.tsx';
 
 const Main = () => {
-	const { resolved } = useAuth();
+	const { resolved, isAdmin } = useAuth();
 
 	return (
 		<div className='flex justify-center w-full'>
@@ -27,7 +27,7 @@ const Main = () => {
 							<Route path='*' element={<Home />} />
 							<Route path='/login' element={<Login />} />
 							<Route path='/game' element={<Game />} />
-							<Route path='/admin' element={<Admin />} />
+							{isAdmin && <Route path='/admin' element={<Admin />} />}
 						</Routes>
 					</>
 				) : (

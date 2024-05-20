@@ -2,7 +2,7 @@ import app from '@adonisjs/core/services/app'
 import { defineConfig } from '@adonisjs/lucid'
 
 const dbConfig = defineConfig({
-  connection: 'sqlite',
+  connection: app.inDev ? 'sqlite' : 'postgres',
   connections: {
     sqlite: {
       client: 'better-sqlite3',
@@ -10,6 +10,16 @@ const dbConfig = defineConfig({
         filename: app.tmpPath('db.sqlite3'),
       },
       useNullAsDefault: true,
+      migrations: {
+        naturalSort: true,
+        paths: ['database/migrations'],
+      },
+    },
+    postgres: {
+      client: 'pg',
+      connection: {
+        connectionString: process.env.POSTGRES_URL,
+      },
       migrations: {
         naturalSort: true,
         paths: ['database/migrations'],

@@ -1,10 +1,13 @@
 import { Theme } from '@/utils/types';
 import { createContext, useContext, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+
+const COOKIE_KEY = 'theme';
+const COOKIE_EXPIRES = 12; // 12 hours
 
 type ThemeProviderProps = {
 	children: React.ReactNode;
 	defaultTheme?: Theme;
-	storageKey?: string;
 };
 
 type ThemeProviderState = {
@@ -13,34 +16,33 @@ type ThemeProviderState = {
 };
 
 const initialState: ThemeProviderState = {
-	theme: 'system',
+	theme: 'light',
 	setTheme: () => null,
 };
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
-export function ThemeProvider({ children, defaultTheme = 'system', storageKey = 'theme', ...props }: ThemeProviderProps) {
-	const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme) || defaultTheme);
+export function ThemeProvider({ children, defaultTheme = 'light', ...props }: ThemeProviderProps) {
+	const [theme, setTheme] = useState<Theme>(() => {
+		const cookieTheme = Cookies.get(COOKIE_KEY) as Theme;
+
+		if (cookieTheme) return cookieTheme;
+
+		// If no cookie is set, use the system theme
+		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	});
 
 	useEffect(() => {
 		const root = window.document.documentElement;
 
 		root.classList.remove('light', 'dark');
-
-		if (theme === 'system') {
-			const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-
-			root.classList.add(systemTheme);
-			return;
-		}
-
 		root.classList.add(theme);
 	}, [theme]);
 
 	const value = {
 		theme,
 		setTheme: (theme: Theme) => {
-			localStorage.setItem(storageKey, theme);
+			Cookies.set(COOKIE_KEY, theme, { expires: COOKIE_EXPIRES / 24 }); // Convert to days
 			setTheme(theme);
 		},
 	};

@@ -2,19 +2,19 @@ export type Theme = 'dark' | 'light';
 
 export type User = {
 	id: number;
-	firstname?: string;
-	lastname?: string;
-	username: string;
-	role?: string;
+	firstname?: string | null;
+	lastname?: string | null;
+	username: string | null;
+	role?: string | null;
 };
 
 export type Country = {
 	id: number;
 	codeIso: string;
-	name?: string;
-	continent?: string;
-	about?: string;
-	memo?: string;
+	name: string | null;
+	continent: string | null;
+	about: string | null;
+	memo: string | null;
 };
 
 export type CountryCodes = {

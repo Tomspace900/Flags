@@ -3,9 +3,11 @@ import { APIGetHome } from '../utils/apiCalls';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
+import { useMyContext } from '@/contexts/ContextProvider';
 
 function Home() {
 	const [message, setMessage] = useState<string>('');
+	const { continents } = useMyContext();
 
 	useEffect(() => {
 		getHome();
@@ -27,6 +29,16 @@ function Home() {
 					<ChevronRight className='ml-2 h-4 w-4' />
 				</Link>
 			</Button>
+			<div className='flex flex-wrap gap-2 justify-center max-w-2xl'>
+				{continents &&
+					continents.map((continent) => {
+						return (
+							<Button asChild variant='link' key={continent}>
+								<Link to={`/game/${continent}`}>{continent}</Link>
+							</Button>
+						);
+					})}
+			</div>
 		</div>
 	);
 }

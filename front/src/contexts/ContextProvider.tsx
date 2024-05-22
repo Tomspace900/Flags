@@ -5,20 +5,25 @@ import { APIGetCountries, APIseedCountries } from '@/utils/apiCalls';
 
 interface IContext {
 	countries: Country[];
+	continents: string[];
 	updateCountryById: (id: number, data: Country) => void;
 }
 
 const Context = createContext<IContext>({
 	countries: [],
+	continents: [],
 	updateCountryById: () => {},
 });
 
 export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [countries, setCountries] = useState<Country[]>([]);
+	const [continents, setContinents] = useState<string[]>([]);
 
 	const updateCountryById = (id: number, data: Country) => {
 		const updatedCountries = countries.map((country) => (country.id === id ? data : country));
 		setCountries(updatedCountries);
+		const newContinents = [...new Set(updatedCountries.map((country) => country.continent))].filter((c) => c !== null) as string[];
+		setContinents(newContinents);
 	};
 
 	const getCountriesCodes = async () => {
@@ -33,7 +38,11 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 			console.log(`${newRes?.length} new countries added`);
 		}
 
-		res && setCountries(res?.sort((a, b) => a.codeIso.localeCompare(b.codeIso)));
+		if (res) {
+			setCountries(res?.sort((a, b) => (a.name && b.name ? a.name.localeCompare(b.name) : 0)));
+			const newContinents = [...new Set(res.map((country) => country.continent))].filter((c) => c !== null) as string[];
+			setContinents(newContinents);
+		}
 	};
 
 	async function seedCountries(codes: CountryCodes) {
@@ -51,7 +60,7 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 		countries.length <= 0 && getCountriesCodes();
 	}, []);
 
-	return <Context.Provider value={{ countries, updateCountryById }}>{children}</Context.Provider>;
+	return <Context.Provider value={{ countries, continents, updateCountryById }}>{children}</Context.Provider>;
 };
 
 export const useMyContext = (): IContext => {

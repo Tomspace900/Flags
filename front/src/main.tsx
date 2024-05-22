@@ -27,7 +27,9 @@ const Main = () => {
 							<Route path='*' element={<Home />} />
 							<Route path='/login' element={<Login />} />
 							<Route path='/game' element={<Game />} />
-							{isAdmin && <Route path='/admin' element={<Admin />} />}
+							<Route path='/game/:continent' element={<Game />} />
+							{isAdmin && <Route path='/admin/*' element={<Admin />} />}
+							{isAdmin && <Route path='/admin/edit/:countryCode' element={<Admin />} />}
 						</Routes>
 					</>
 				) : (

@@ -12,15 +12,17 @@ import Loader from '../Loader';
 import { useToast } from '../ui/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { APIUpdateCountry } from '@/utils/apiCalls';
+import { useNavigate } from 'react-router-dom';
 
 type CountryEditFormProps = {
 	country: Country;
+	continents: string[];
 	updateCountryById: (id: number, data: Country) => void;
-	toggleForm: (e: Country | undefined) => void;
 };
 
-const CountryEditForm = ({ country, updateCountryById, toggleForm }: CountryEditFormProps) => {
+const CountryEditForm = ({ country, continents, updateCountryById }: CountryEditFormProps) => {
 	const { toast } = useToast();
+	const navigate = useNavigate();
 	const form = useForm<CountryEditFormSchema>({
 		resolver: zodResolver(countryEditFormSchema),
 		defaultValues: {
@@ -40,7 +42,7 @@ const CountryEditForm = ({ country, updateCountryById, toggleForm }: CountryEdit
 				description: `${country.name} updated !`,
 			});
 			updateCountryById(countryData.id, countryData);
-			toggleForm(undefined);
+			navigate('/admin');
 		} else {
 			toast({
 				variant: 'destructive',
@@ -67,7 +69,7 @@ const CountryEditForm = ({ country, updateCountryById, toggleForm }: CountryEdit
 				title: 'No changes',
 				description: 'No changes detected.',
 			});
-			toggleForm(undefined);
+			navigate('/admin');
 		}
 	}
 
@@ -88,11 +90,11 @@ const CountryEditForm = ({ country, updateCountryById, toggleForm }: CountryEdit
 											<SelectValue placeholder='Select a continent' />
 										</SelectTrigger>
 										<SelectContent>
-											<SelectItem value='Africa'>Africa</SelectItem>
-											<SelectItem value='America'>America</SelectItem>
-											<SelectItem value='Asia'>Asia</SelectItem>
-											<SelectItem value='Europe'>Europe</SelectItem>
-											<SelectItem value='Oceania'>Oceania</SelectItem>
+											{continents.map((continent) => (
+												<SelectItem key={continent} value={continent}>
+													{continent}
+												</SelectItem>
+											))}
 										</SelectContent>
 									</Select>
 								</FormControl>

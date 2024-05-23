@@ -6,12 +6,12 @@ import { Input } from '../ui/input';
 import { loginFormSchema, LoginFormSchema } from '@/utils/formSchema';
 import { APILogin } from '@/utils/apiCalls';
 import { useAuth } from '../../contexts/AuthProvider';
-import { useNavigate } from 'react-router-dom';
 import { useToast } from '../ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
 	const { setUser } = useAuth();
-	const navigate = useNavigate();
+	const router = useRouter();
 	const { toast } = useToast();
 
 	const form = useForm<LoginFormSchema>({
@@ -31,7 +31,7 @@ const LoginForm = () => {
 				title: 'Login success',
 				description: `Welcome back ${user.firstname || user.username} !`,
 			});
-			navigate('/');
+			router.push('/');
 		} else {
 			toast({
 				variant: 'destructive',

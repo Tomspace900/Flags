@@ -1,3 +1,5 @@
+'use client';
+
 import { Theme } from '@/utils/types';
 import { createContext, useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
@@ -24,19 +26,24 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({ children, defaultTheme = 'light', ...props }: ThemeProviderProps) {
 	const [theme, setTheme] = useState<Theme>(() => {
-		const cookieTheme = Cookies.get(COOKIE_KEY) as Theme;
+		if (typeof window !== 'undefined') {
+			const cookieTheme = Cookies.get(COOKIE_KEY) as Theme;
 
-		if (cookieTheme) return cookieTheme;
+			if (cookieTheme) return cookieTheme;
 
-		// If no cookie is set, use the system theme
-		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+			// If no cookie is set, use the system theme
+			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+		}
+		return defaultTheme;
 	});
 
 	useEffect(() => {
-		const root = window.document.documentElement;
+		if (typeof window !== 'undefined') {
+			const root = window.document.documentElement;
 
-		root.classList.remove('light', 'dark');
-		root.classList.add(theme);
+			root.classList.remove('light', 'dark');
+			root.classList.add(theme);
+		}
 	}, [theme]);
 
 	const value = {

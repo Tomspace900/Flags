@@ -1,7 +1,7 @@
 import { LoginFormSchema } from './formSchema';
 import { Country, User } from './types';
 
-const API_URL = import.meta.env.VITE_ADONIS_BASE_URL;
+const API_URL = process.env.NEXT_PUBLIC_ADONIS_BASE_URL;
 
 interface FetchOptions {
 	method?: 'GET' | 'POST' | 'PUT' | 'DELETE';

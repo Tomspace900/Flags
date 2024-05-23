@@ -1,6 +1,6 @@
 import { CountryCodes } from './types';
 
-const API_URL = import.meta.env.VITE_FLAGCDN_BASE_URL;
+const API_URL = process.env.NEXT_PUBLIC_FLAGCDN_BASE_URL;
 
 async function fetchAPI(url: string) {
 	const response = await fetch(`${API_URL}${url}`, {

@@ -1,27 +1,33 @@
-import { Link, useLocation } from 'react-router-dom';
-import { Button } from './ui/button';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '../contexts/AuthProvider';
+import Link from 'next/link';
+import { Button } from './ui/button';
 import ProfilePopover from './ProfilePopover';
 import ThemeSwitcher from './ThemeSwitcher';
 
 const NavBar = () => {
 	const { user } = useAuth();
-	const location = useLocation();
+	const pathname = usePathname();
 
 	// Hide the NavBar on login page
-	if (location.pathname === '/login') {
+	if (pathname === '/login') {
 		return null;
 	}
 
 	return (
-		<div className='flex h-24 w-full justify-end items-center px-4'>
+		<div className='flex h-24 w-full justify-between items-center px-4'>
+			<div className='flex items-center gap-4'>
+				<Link href={'/'}>
+					<h1 className='text-2xl'>Flags</h1>
+				</Link>
+			</div>
 			<div className='flex items-center gap-4'>
 				<ThemeSwitcher />
 				{user ? (
 					<ProfilePopover />
 				) : (
 					<Button asChild>
-						<Link to={'/login'}>Login</Link>
+						<Link href={'/login'}>Login</Link>
 					</Button>
 				)}
 			</div>

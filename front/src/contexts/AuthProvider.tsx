@@ -1,10 +1,12 @@
+'use client';
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Score, User } from '../utils/types';
+import { LoadingState, Score, User } from '../utils/types';
 import { APICheckSession, APIGetScores, APILogout } from '@/utils/apiCalls';
 import { useToast } from '../components/ui/use-toast';
 
 interface IAuthContext {
-	resolved: boolean;
+	authLoading: LoadingState;
 	user: User | undefined;
 	setUser: (value: User | undefined) => void;
 	isAdmin: boolean;
@@ -14,7 +16,7 @@ interface IAuthContext {
 }
 
 const AuthContext = createContext<IAuthContext>({
-	resolved: false,
+	authLoading: 'idle',
 	user: undefined,
 	setUser: () => {},
 	isAdmin: false,
@@ -24,7 +26,7 @@ const AuthContext = createContext<IAuthContext>({
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [resolved, setResolved] = useState<boolean>(false);
+	const [authLoading, setAuthLoading] = useState<LoadingState>('idle');
 	const [user, setUser] = useState<User | undefined>();
 	const [scores, setScores] = useState<Score[]>();
 	const isAdmin: boolean = user?.role === 'admin';
@@ -32,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 	const checkSession = async () => {
 		setUser(await APICheckSession());
-		setResolved(true);
+		setAuthLoading('done');
 	};
 
 	const getScores = async () => {
@@ -61,7 +63,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	}, [user]);
 
 	return (
-		<AuthContext.Provider value={{ resolved, user, setUser, isAdmin, logout, checkSession, scores }}>{children}</AuthContext.Provider>
+		<AuthContext.Provider value={{ authLoading, user, setUser, isAdmin, logout, checkSession, scores }}>
+			{children}
+		</AuthContext.Provider>
 	);
 };
 

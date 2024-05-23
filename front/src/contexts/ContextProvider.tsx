@@ -1,7 +1,10 @@
+'use client';
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Country, CountryCodes } from '../utils/types';
 import { FLAGAPIGetCodes } from '@/utils/flagsApiCalls';
 import { APIGetCountries, APIseedCountries } from '@/utils/apiCalls';
+import _ from 'lodash';
 
 interface IContext {
 	countries: Country[];
@@ -22,25 +25,25 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 	const updateCountryById = (id: number, data: Country) => {
 		const updatedCountries = countries.map((country) => (country.id === id ? data : country));
 		setCountries(updatedCountries);
-		const newContinents = [...new Set(updatedCountries.map((country) => country.continent))].filter((c) => c !== null) as string[];
+		const newContinents = _.uniq(updatedCountries.map((country) => country.continent).filter((c): c is string => c !== null));
 		setContinents(newContinents);
 	};
 
 	const getCountriesCodes = async () => {
-		let res = await APIGetCountries();
+		let _countries = await APIGetCountries();
 		const codes = await FLAGAPIGetCodes();
 
-		if (res && codes && Object.keys(codes).length > res.length) {
+		if (_countries && codes && Object.keys(codes).length > _countries.length) {
 			console.log('Seeding countries...');
-			const newRes = await seedCountries(codes);
-			console.log('newRes: ', newRes);
-			res = res.concat(newRes || []);
-			console.log(`${newRes?.length} new countries added`);
+			const _newCountries = await seedCountries(codes);
+			console.log('_newCountries: ', _newCountries);
+			_countries = _countries.concat(_newCountries || []);
+			console.log(`${_newCountries?.length} new countries added`);
 		}
 
-		if (res) {
-			setCountries(res?.sort((a, b) => (a.name && b.name ? a.name.localeCompare(b.name) : 0)));
-			const newContinents = [...new Set(res.map((country) => country.continent))].filter((c) => c !== null) as string[];
+		if (_countries) {
+			setCountries(_countries?.sort((a, b) => (a.name && b.name ? a.name.localeCompare(b.name) : 0)));
+			const newContinents = _.uniq(_countries.map((country) => country.continent).filter((c): c is string => c !== null));
 			setContinents(newContinents);
 		}
 	};
@@ -58,7 +61,7 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
 	useEffect(() => {
 		countries.length <= 0 && getCountriesCodes();
-	}, []);
+	}, [countries]);
 
 	return <Context.Provider value={{ countries, continents, updateCountryById }}>{children}</Context.Provider>;
 };

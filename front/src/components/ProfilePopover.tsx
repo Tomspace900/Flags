@@ -2,7 +2,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Button } from './ui/button';
 import { History, LogOut, Shield, User } from 'lucide-react';
 import { useAuth } from '../contexts/AuthProvider';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Badge } from './ui/badge';
 
 const ProfilePopover = () => {
@@ -39,7 +39,7 @@ const ProfilePopover = () => {
 					<div className='flex flex-col gap-2'>
 						{isAdmin && (
 							<Button asChild variant='accent' disabled={scores && scores.length > 0}>
-								<Link to={'/admin'}>
+								<Link href={'/admin/edit'}>
 									Admin
 									<Shield className='ml-2 h-4 w-4' />
 								</Link>
@@ -48,14 +48,14 @@ const ProfilePopover = () => {
 
 						<Button asChild disabled={scores && scores.length > 0}>
 							{/** // TODO */}
-							<Link to={'/history'}>
+							<Link href={'/history'}>
 								History
 								<History className='ml-2 h-4 w-4' />
 							</Link>
 						</Button>
 
 						<Button asChild variant='destructive' onClick={() => logout()}>
-							<Link to={'/'}>
+							<Link href={'/'}>
 								Logout
 								<LogOut className='ml-2 h-4 w-4' />
 							</Link>

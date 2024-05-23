@@ -1,5 +1,3 @@
-'use server';
-
 import _ from 'lodash';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -12,7 +10,7 @@ import Loader from '../Loader';
 import { useToast } from '../ui/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { APIUpdateCountry } from '@/utils/apiCalls';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 
 type CountryEditFormProps = {
 	country: Country;
@@ -22,7 +20,7 @@ type CountryEditFormProps = {
 
 const CountryEditForm = ({ country, continents, updateCountryById }: CountryEditFormProps) => {
 	const { toast } = useToast();
-	const navigate = useNavigate();
+	const router = useRouter();
 	const form = useForm<CountryEditFormSchema>({
 		resolver: zodResolver(countryEditFormSchema),
 		defaultValues: {
@@ -42,7 +40,7 @@ const CountryEditForm = ({ country, continents, updateCountryById }: CountryEdit
 				description: `${country.name} updated !`,
 			});
 			updateCountryById(countryData.id, countryData);
-			navigate('/admin');
+			router.push('/admin/edit');
 		} else {
 			toast({
 				variant: 'destructive',
@@ -69,7 +67,7 @@ const CountryEditForm = ({ country, continents, updateCountryById }: CountryEdit
 				title: 'No changes',
 				description: 'No changes detected.',
 			});
-			navigate('/admin');
+			router.push('/admin/edit');
 		}
 	}
 

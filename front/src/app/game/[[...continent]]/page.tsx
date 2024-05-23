@@ -1,31 +1,28 @@
+'use client';
+
 import { useEffect, useMemo, useState } from 'react';
-import { useMyContext } from '../contexts/ContextProvider';
+import { useMyContext } from '@/contexts/ContextProvider';
 import Loader from '@/components/Loader';
 import { Country } from '@/utils/types';
-import { useNavigate, useParams } from 'react-router-dom';
+import Image from 'next/image';
+import _ from 'lodash';
 
-const API_URL = import.meta.env.VITE_FLAGCDN_BASE_URL;
+const API_URL = process.env.NEXT_PUBLIC_FLAGCDN_BASE_URL;
 
 function getRandomCountry(list: Country[]): Country {
 	return list[Math.floor(Math.random() * list.length)];
 }
 
-function Game() {
-	const navigate = useNavigate();
-	const { continent } = useParams();
+function Game({ params }: { params: { continent: string[] } }) {
 	const { countries, continents } = useMyContext();
-
-	if (!countries) return <Loader />;
-
-	useEffect(() => {
-		if (continent && !continents.includes(continent)) {
-			navigate('/game', { replace: true });
-		}
-	}, [continent]);
+	const continent = _.find(continents, (value) => _.includes(params.continent, value));
 
 	const filteredCountries = useMemo(
-		() => (continent && continents.includes(continent) ? countries.filter((country) => country.continent === continent) : countries),
-		[countries, continent],
+		() =>
+			continent && continents.includes(continent)
+				? countries.filter((country) => country.continent === continent)
+				: countries,
+		[countries, continent, continents],
 	);
 	const shuffledCountries = useMemo(() => filteredCountries.sort(() => Math.random() - 0.5), [filteredCountries]);
 
@@ -34,6 +31,8 @@ function Game() {
 	useEffect(() => {
 		setAskedCountry(getRandomCountry(shuffledCountries));
 	}, [shuffledCountries]);
+
+	if (!countries) return <Loader />;
 
 	const handleClickedCountry = (country: Country) => {
 		if (country === askedCountry) {
@@ -52,13 +51,14 @@ function Game() {
 				{countries &&
 					shuffledCountries.map((country) => {
 						return (
-							<img
+							<Image
 								key={country.codeIso}
 								onClick={() => handleClickedCountry(country)}
 								src={`${API_URL}/${country.codeIso}.svg`}
 								alt={`${country.name}_flag`}
-								width='120'
-								height='auto'
+								width={120}
+								height={90}
+								className='rounded-md'
 							/>
 						);
 					})}

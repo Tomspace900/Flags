@@ -1,14 +1,22 @@
-import { useNavigate } from 'react-router-dom';
-import LoginForm from '../components/auth/LoginForm';
-import RegisterForm from '../components/auth/RegisterForm';
+'use client';
+
+import { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthProvider';
+import RegisterForm from '@/components/auth/RegisterForm';
+import LoginForm from '@/components/auth/LoginForm';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
 	const { user } = useAuth();
-	const navigate = useNavigate();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (user) {
+			router.push('/');
+		}
+	}, [user, router]);
 
 	if (user) {
-		navigate('/');
 		return null;
 	}
 

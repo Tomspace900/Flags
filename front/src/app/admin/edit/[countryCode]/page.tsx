@@ -1,36 +1,39 @@
 'use client';
 
-import { useMyContext } from '@/contexts/ContextProvider';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { useMyContext } from '@/contexts/ContextProvider';
 import { Country } from '@/utils/types';
-import CountryEditForm from '@/components/auth/CountryEditForm';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useNavigate, useParams } from 'react-router-dom';
+import CountryEditForm from '@/components/auth/CountryEditForm';
 
-const API_URL = import.meta.env.VITE_FLAGCDN_BASE_URL;
+const API_URL = process.env.NEXT_PUBLIC_FLAGCDN_BASE_URL;
 
-const Admin = () => {
-	const navigate = useNavigate();
+const Admin = ({ params: { countryCode } }: { params: { countryCode: string } }) => {
+	const router = useRouter();
 	const { countries, continents, updateCountryById } = useMyContext();
-	const { countryCode } = useParams();
-	const [selectedCountry, setSelectedCountry] = useState<Country | undefined>();
+	const [selectedCountry, setSelectedCountry] = useState<Country | undefined>(
+		countries.find((country) => country.codeIso === countryCode),
+	);
 
 	useEffect(() => {
 		if (countryCode) setSelectedCountry(countries.find((country) => country.codeIso === countryCode));
 		else {
 			setSelectedCountry(undefined);
-			return navigate('/admin');
+			return router.push('/admin');
 		}
-	}, [countryCode, countries]);
+	}, [countryCode, countries, router]);
 
 	return (
-		<div className='h-full flex flex-col mt-24 w-[450px] gap-8'>
+		<>
 			{selectedCountry ? (
 				<>
-					<img
+					<Image
 						src={`${API_URL}/${selectedCountry.codeIso}.svg`}
 						alt={`${selectedCountry.name}_flag`}
-						width='120'
+						width={120}
+						height={90}
 						className='rounded-md'
 					/>
 					<h1 className='text-4xl'>
@@ -43,7 +46,7 @@ const Admin = () => {
 					<h1 className='text-4xl'>
 						Select a <span className='text-secondary'>country</span>
 					</h1>
-					<Select onValueChange={(value) => navigate(`/admin/edit/${value}`)}>
+					<Select onValueChange={(value) => router.push(`/admin/edit/${value}`)}>
 						<SelectTrigger>
 							<SelectValue placeholder='Select a country' />
 						</SelectTrigger>
@@ -57,7 +60,7 @@ const Admin = () => {
 					</Select>
 				</>
 			)}
-		</div>
+		</>
 	);
 };
 

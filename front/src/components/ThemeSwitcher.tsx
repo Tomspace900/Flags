@@ -1,3 +1,5 @@
+'use client';
+
 import { useTheme } from '../contexts/ThemeProvider';
 import { Switch } from './ui/switch';
 import { useState } from 'react';
@@ -13,7 +15,12 @@ const ThemeSwitcher = () => {
 	};
 
 	return (
-		<Switch isThemeSwitcher checked={selectedTheme === 'dark'} onCheckedChange={handleThemeChange} defaultChecked={theme === 'dark'} />
+		<Switch
+			isThemeSwitcher
+			checked={selectedTheme === 'dark'}
+			onCheckedChange={handleThemeChange}
+			defaultChecked={theme === 'dark'}
+		/>
 	);
 };
 

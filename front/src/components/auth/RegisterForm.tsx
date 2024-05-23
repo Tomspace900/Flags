@@ -5,12 +5,12 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { registerFormSchema, RegisterFormSchema } from '@/utils/formSchema';
 import { APIRegister } from '@/utils/apiCalls';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthProvider';
+import { useRouter } from 'next/navigation';
 
 const RegisterForm = () => {
 	const { setUser } = useAuth();
-	const navigate = useNavigate();
+	const router = useRouter();
 
 	const form = useForm<RegisterFormSchema>({
 		resolver: zodResolver(registerFormSchema),
@@ -25,7 +25,7 @@ const RegisterForm = () => {
 	const handleRegister = async (data: RegisterFormSchema) => {
 		const user = await APIRegister(data);
 		setUser(user);
-		navigate('/');
+		router.push('/');
 	};
 
 	function onSubmit(values: RegisterFormSchema) {

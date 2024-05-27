@@ -26,40 +26,65 @@ function Game({ params }: { params: { continent: string[] } }) {
 	);
 	const shuffledCountries = useMemo(() => filteredCountries.sort(() => Math.random() - 0.5), [filteredCountries]);
 
-	const [askedCountry, setAskedCountry] = useState<Country>(getRandomCountry(shuffledCountries));
+	const [askedCountry, setAskedCountry] = useState<Country>();
+	const [errorCountry, setErrorCountry] = useState<string | null>(null);
+	const [successCountry, setSuccessCountry] = useState<boolean | false>(false);
 
 	useEffect(() => {
 		setAskedCountry(getRandomCountry(shuffledCountries));
 	}, [shuffledCountries]);
 
-	if (!countries) return <Loader />;
-
 	const handleClickedCountry = (country: Country) => {
 		if (country === askedCountry) {
 			console.log('Correct!');
 			shuffledCountries.splice(shuffledCountries.indexOf(country), 1);
-			setAskedCountry(shuffledCountries[Math.floor(Math.random() * shuffledCountries.length)]);
+			setSuccessCountry(true);
+			setTimeout(() => {
+				setSuccessCountry(false);
+				setAskedCountry(getRandomCountry(shuffledCountries));
+			}, 500);
 		} else {
 			console.log(`Wrong! It's ${country.name}`);
+			setErrorCountry(country.codeIso);
+			setTimeout(() => setErrorCountry(null), 500);
 		}
 	};
 
 	return countries ? (
 		<div className='flex flex-col w-full items-center gap-4'>
-			{askedCountry && <span className='text-2xl fixed bg-black'>{askedCountry.name}</span>}
-			<div className='flex flex-wrap gap-8 justify-center max-w-2xl'>
+			{askedCountry && (
+				<div className='fixed top-10 w-fit z-50'>
+					<div
+						className={`flex justify-center rounded-full border backdrop-blur-sm px-8 py-3 ${
+							errorCountry
+								? 'bg-destructive text-destructive-foreground border-red'
+								: successCountry
+								? 'bg-success text-success-foreground border-green'
+								: 'bg-input/[0.8] dark:bg-background/[0.8] border-primary'
+						}`}>
+						<span className='text-2xl'>{askedCountry.name}</span>
+					</div>
+				</div>
+			)}
+
+			<div className='flex flex-wrap gap-8 justify-center items-center max-w-3xl'>
 				{countries &&
 					shuffledCountries.map((country) => {
 						return (
-							<Image
+							<div
 								key={country.codeIso}
-								onClick={() => handleClickedCountry(country)}
-								src={`${API_URL}/${country.codeIso}.svg`}
-								alt={`${country.name}_flag`}
-								width={120}
-								height={90}
-								className='rounded-md'
-							/>
+								className={`rounded-md cursor-pointer hover:scale-105 transition-transform duration-200 ease-in-out ${
+									errorCountry === country.codeIso ? 'error-shake error-red' : ''
+								}`}>
+								<Image
+									onClick={() => handleClickedCountry(country)}
+									src={`${API_URL}/w320/${country.codeIso}.webp`}
+									alt={`${country.codeIso}_flag`}
+									width={130}
+									height={90}
+									className='rounded-md'
+								/>
+							</div>
 						);
 					})}
 			</div>
